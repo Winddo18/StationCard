@@ -329,10 +329,10 @@ const model = ref({
 
 const onCreate = () => {
   return {
-    name: '朱子键',
-    id: '2201110533',
-    department: '事务部',
-    grade: '本科',
+    name: '',
+    id: '',
+    department: '',
+    grade: '',
   }
 }
 const options = [
@@ -407,10 +407,10 @@ const beforeUpload = async (data: {
           uploadArray.value
         )
         uploadArray.value = []
+        message.success('上传成功!')
       }
     })
   }
-  message.success('上传成功!')
   return false
 }
 
