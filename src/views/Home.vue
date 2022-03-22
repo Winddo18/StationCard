@@ -3,7 +3,7 @@
     <n-card class="mb-30px">
       <n-tabs default-value="input" size="large" justify-content="space-evenly">
         <n-tab-pane name="input" tab="在线输入">
-          <n-form :model="model">
+          <n-form :model="model" class="mb-10px">
             <n-dynamic-input
               v-model:value="model.dynamicInputValue"
               item-style="margin-bottom: 0;"
@@ -79,6 +79,7 @@
               </div>
             </n-dynamic-input>
           </n-form>
+          <n-button @click="clearInput" class="mr-20px">清空输入</n-button>
           <n-button @click="showModal" class="mr-20px"> 生成预览 </n-button>
           <n-button @click="renderPDF">生成PDF</n-button>
           <n-modal
@@ -208,6 +209,7 @@
               </div>
             </n-dynamic-input>
           </n-form>
+          <n-button @click="clearUploadInput" class="mr-20px">清空输入</n-button>
           <n-button @click="uploadShowModal" class="mt-5px mr-20px">
             生成预览
           </n-button>
@@ -285,7 +287,6 @@ const downloadFile = () => {
   XLSX.writeFile(workbook, '数据.xlsx')
 }
 
-
 //输入模块--------------START
 //对各个输入框进行验证----
 const nameInputRule = {
@@ -325,6 +326,7 @@ const model = ref({
   dynamicInputValue: [{ id: '', name: '', department: '', grade: '' }],
 })
 
+
 const onCreate = () => {
   return {
     name: '朱子键',
@@ -347,20 +349,15 @@ const options = [
     value: '博士',
   },
 ]
+
+const clearInput = () => {
+  model.value.dynamicInputValue = []
+}
 //---------
 //-------------END
 
 //批量导入模块---------START
 //文件读取函数
-/* const readFile = (file: any) => {
-  return new Promise((resolve) => {
-    let reader = new FileReader()
-    reader.readAsBinaryString(file)
-    reader.onload = (ev: any) => {
-      resolve(ev.target.result)
-    }
-  })
-} */
 const message = useMessage()
 const selectFile: any = ref(null)
 
@@ -369,7 +366,6 @@ const beforeUpload = async (data: {
   fileList: UploadFileInfo[]
 }) => {
   selectFile.value = data.file.file
-  console.log(data.file.file)
   if (
     data.file.file?.type !==
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' &&
@@ -399,6 +395,7 @@ const beforeUpload = async (data: {
         })
       })
       uploadArray.value = uploadValidateArray(uploadArray.value)
+      console.log(uploadArray.value)
       if (!uploadFlag.value) {
         message.error('异常数据已清除！请重新输入！')
       }
@@ -409,6 +406,7 @@ const beforeUpload = async (data: {
           uploadModel.value.dynamicInputValue,
           uploadArray.value
         )
+        uploadArray.value = []
       }
     })
   }
@@ -428,10 +426,12 @@ const uploadHandleValidateClick = () => {
 }
 
 const uploadValidateArray = (inputModel: any) => {
+  uploadFlag.value = true
   for (let index = 0; index < inputModel.length; index++) {
     //用map方法会导致删除元素时 index 改变而跳过某些元素  因此此处采用for循环遍历
     let currentValue = inputModel[index]
-    currentValue.id = currentValue.id.toString()
+    if (typeof currentValue.id == 'number')
+      currentValue.id = currentValue.id.toString()
     if (
       !/^[1-3][0-9]+$/.test(currentValue.id) ||
       currentValue.id.length != 10
@@ -474,6 +474,10 @@ const uploadValidateArray = (inputModel: any) => {
     }
   }
   return inputModel
+}
+
+const clearUploadInput = () => {
+  uploadModel.value.dynamicInputValue = []
 }
 //---------
 
@@ -589,9 +593,8 @@ window.onbeforeunload = () => {
 //---------
 </script>
 
-
 <style scoped>
-.breakPage{
+.breakPage {
   page-break-after: always;
 }
 </style>
