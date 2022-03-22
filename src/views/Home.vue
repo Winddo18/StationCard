@@ -209,7 +209,9 @@
               </div>
             </n-dynamic-input>
           </n-form>
-          <n-button @click="clearUploadInput" class="mr-20px">清空输入</n-button>
+          <n-button @click="clearUploadInput" class="mr-20px"
+            >清空输入</n-button
+          >
           <n-button @click="uploadShowModal" class="mt-5px mr-20px">
             生成预览
           </n-button>
@@ -325,7 +327,6 @@ const departmentInputRule = {
 const model = ref({
   dynamicInputValue: [{ id: '', name: '', department: '', grade: '' }],
 })
-
 
 const onCreate = () => {
   return {
