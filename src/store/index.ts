@@ -1,8 +1,26 @@
-import { createStore } from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
-export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+const store = new Vuex.Store({
+  state: {
+    model: [],
+    uploadModel: []
+  },
+  getters: {
+
+  },
+  mutations: {
+    setModel(state, model) {
+      state.model = model;
+    },
+    setUploadModel(state, uploadModel){
+      state.uploadModel = uploadModel
+    }
+  },
+  actions: {
+
+  },
+  plugins: [createPersistedState()],// 持久化：默认将vuex中的值保存到localStorage
 });
+export default store;
