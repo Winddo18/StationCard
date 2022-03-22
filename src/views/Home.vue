@@ -559,7 +559,7 @@ const showModal = () => {
 const renderPDF = () => {
   showModal()
   setTimeout(() => {
-    getPdf('pdfDom')
+    getPdf()
   }, 200) //等Dom结点渲染出来再调用函数 否则获取不到Dom结点
 }
 
@@ -577,7 +577,7 @@ const uploadShowModal = () => {
 const uploadRenderPDF = () => {
   uploadShowModal()
   setTimeout(() => {
-    getPdf('uploadPdfDom')
+    getPdf()
   }, 200) //等Dom结点渲染出来再调用函数 否则获取不到Dom结点
 }
 
